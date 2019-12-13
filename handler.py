@@ -55,17 +55,25 @@ def wallet_charge(event, context):
     logger.debug("user_wallet: {}".format(user_wallet))
 
     total_amount = user_wallet['amount'] + body['chargeAmount']
-    wallet_table.update_item(
-        Key={
-            'id': user_wallet['id']
-        },
-        AttributeUpdates={
-            'amount': {
-                'Value': total_amount,
-                'Action': 'PUT'
+    try:
+        response = wallet_table.update_item(
+            Key={
+                'id': user_wallet['id']
+            },
+            AttributeUpdates={
+                'amount': {
+                    'Value': body['chargeAmount'],
+                    'Action': 'ADD'
+                }
+            },
+            ReturnValues='ALL_NEW'
+        )
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] != 'ConditionalCheckFailedException':
+            return {
+                'statusCode': 400,
+                'body': json.dumps({'errorMessage': 'There was not enough money.'})
             }
-        }
-    )
     history_table.put_item(
         Item={
             'walletId': user_wallet['id'],
