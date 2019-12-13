@@ -169,44 +169,51 @@ def wallet_transfer(event, context):
         }
 
     try:
-        response = wallet_table.update_item(
-            Key={
-                'id': from_wallet['id']
-            },
-            AttributeUpdates={
-                'amount': {
-                    'Value': -body['transferAmount'],
-                    'Action': 'ADD'
+        client = boto3.client('dynamodb', region_name='ap-northeast-1')
+        client.transact_write_items(
+            TransactItems=[
+                {
+                    'Update': {
+                        'TableName': os.environ['WALLET_TABLE'],
+                        'Key': {
+                            'id': {'S': from_wallet['id']}
+                        },
+                        'ConditionExpression': 'amount >= :tm',
+                        'UpdateExpression': 'SET amount = :am',
+                        'ExpressionAttributeValues': {
+                            ':tm': {'N': body['transferAmount']},
+                            ':am': {'N': -body['transferAmount']},
+                        }
+                    }
+                },
+                {
+                    'Update': {
+                        'TableName': os.environ['WALLET_TABLE'],
+                        'Key': {
+                            'id': {'S': to_wallet['id']}
+                        },
+                        'UpdateExpression': 'SET amount = :am',
+                        'ExpressionAttributeValues': {
+                            ':am': {'N': body['transferAmount']},
+                        }
+                    }
                 }
-            },
-            ConditionExpression=Attr('amount').gte(body['transferAmount']),
-            ReturnValues='ALL_NEW'
+            ]
         )
+
     except botocore.exceptions.ClientError as e:
+        logger.debug("transaction error: {}".format(e.response))
         if e.response['Error']['Code'] == 'ConditionalCheckFailedException':
             return {
                 'statusCode': 400,
                 'body': json.dumps({'errorMessage': 'There was not enough money.'})
             }
-    try:
-        response = wallet_table.update_item(
-            Key={
-                'id': to_wallet['id']
-            },
-            AttributeUpdates={
-                'amount': {
-                    'Value': body['transferAmount'],
-                    'Action': 'ADD'
-                }
-            },
-            ReturnValues='ALL_NEW'
-        )
-    except botocore.exceptions.ClientError as e:
-        if e.response['Error']['Code'] == 'ConditionalCheckFailedException':
-            return {
-                'statusCode': 400,
-                'body': json.dumps({'errorMessage': 'There was not enough money.'})
-            }
+
+        return {
+            'statusCode': 400,
+            'body': json.dumps({'errorMessage': 'unknown error.'})
+        }
+
     history_table.put_item(
         Item={
             'walletId': from_wallet['id'],
