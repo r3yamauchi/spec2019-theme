@@ -11,16 +11,17 @@ provider:
     TZ: Asia/Tokyo
     USER_TABLE:
       Ref: UserTable
-    WALLET_TABLE:
-      Ref: WalletTable
     PAYMENT_HISTORY_TABLE:
       Ref: PaymentHistoryTable
+    NOTIFICATION_QUEUE:
+      Ref: NotificationQueue
     NOTIFICATION_ENDPOINT: 'https://o5wb09mgpg.execute-api.ap-northeast-1.amazonaws.com/prod/notification'
     LOCATION_ENDPOINT: 'https://o5wb09mgpg.execute-api.ap-northeast-1.amazonaws.com/prod/location'
   iamRoleStatements:
     - Effect: Allow
       Action:
         - "dynamodb:*"
+        - "sqs:*"
       Resource:
         - "*"
 
@@ -61,9 +62,19 @@ functions:
       - http:
           path: users/{userId}/history
           method: get
+  SendNotification:
+    handler: handler.send_notification
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - NotificationQueue
+              - Arn
 
 resources:
   Resources:
+    NotificationQueue:
+      Type: AWS::SQS::Queue
     UserTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -74,37 +85,28 @@ resources:
         KeySchema:
           - AttributeName: id
             KeyType: HASH
-    WalletTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        BillingMode: PAY_PER_REQUEST
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-          - AttributeName: userId
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-        GlobalSecondaryIndexes:
-          - IndexName: WalletGSI
-            KeySchema:
-              - AttributeName: userId
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
-
     PaymentHistoryTable:
       Type: AWS::DynamoDB::Table
       Properties:
         BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
-          - AttributeName: walletId
+          - AttributeName: userId
             AttributeType: S
           - AttributeName: transactionId
             AttributeType: S
+          - AttributeName: timestamp
+            AttributeType: S
         KeySchema:
-          - AttributeName: walletId
+          - AttributeName: userId
             KeyType: HASH
           - AttributeName: transactionId
             KeyType: RANGE
+        LocalSecondaryIndexes: 
+        - IndexName: "timestampIndex"
+          KeySchema: 
+            - AttributeName: "userId"
+              KeyType: "HASH"
+            - AttributeName: "timestamp"
+              KeyType: "RANGE"
+          Projection: 
+            ProjectionType: "ALL"
