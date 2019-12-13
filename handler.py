@@ -7,6 +7,7 @@ import boto3
 import requests
 import logging
 import traceback
+from boto3.dynamodb.conditions import Key, Attr
 
 ddb = boto3.resource('dynamodb')
 user_table = ddb.Table(os.environ['USER_TABLE'])
