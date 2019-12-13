@@ -184,7 +184,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576200683036-2019-12-13T01:31:23.036Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576202125707-2019-12-13T01:55:25.707Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-CreateUser",
         "Handler": "handler.user_create",
@@ -233,7 +233,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576200683036-2019-12-13T01:31:23.036Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576202125707-2019-12-13T01:55:25.707Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-WalletCharge",
         "Handler": "handler.wallet_charge",
@@ -282,7 +282,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576200683036-2019-12-13T01:31:23.036Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576202125707-2019-12-13T01:55:25.707Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-WalletUse",
         "Handler": "handler.wallet_use",
@@ -331,7 +331,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576200683036-2019-12-13T01:31:23.036Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576202125707-2019-12-13T01:55:25.707Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-WalletTransfer",
         "Handler": "handler.wallet_transfer",
@@ -380,7 +380,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576200683036-2019-12-13T01:31:23.036Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576202125707-2019-12-13T01:55:25.707Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-GetUserSummary",
         "Handler": "handler.get_user_summary",
@@ -429,7 +429,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576200683036-2019-12-13T01:31:23.036Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576202125707-2019-12-13T01:55:25.707Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-GetPaymentHistory",
         "Handler": "handler.get_payment_history",
@@ -842,7 +842,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1576200681797": {
+    "ApiGatewayDeployment1576202124350": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -1080,6 +1080,118 @@
           ]
         }
       }
+    },
+    "ApiGatewayLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/api-gateway/jeffpay-dev"
+      }
+    },
+    "CustomApiGatewayAccountCloudWatchRole": {
+      "Type": "Custom::ApiGatewayAccountRole",
+      "Version": 1,
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomDashresourceDashapigwDashcwDashroleLambdaFunction",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "IamRoleCustomResourcesLambdaExecution": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "dev",
+                  "jeffpay",
+                  "custom-resources-lambda"
+                ]
+              ]
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      ":",
+                      [
+                        "arn:aws:iam:",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        "role/*"
+                      ]
+                    ]
+                  },
+                  "Action": [
+                    "iam:AttachRolePolicy",
+                    "iam:CreateRole",
+                    "iam:ListAttachedRolePolicies",
+                    "iam:PassRole"
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:apigateway:*::/account",
+                  "Action": [
+                    "apigateway:GET",
+                    "apigateway:PATCH"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "CustomDashresourceDashapigwDashcwDashroleLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/jeffpay/dev/1576202125707-2019-12-13T01:55:25.707Z/custom-resources.zip"
+        },
+        "FunctionName": "jeffpay-dev-custom-resource-apigw-cw-role",
+        "Handler": "apiGatewayCloudWatchRole/handler.handler",
+        "MemorySize": 1024,
+        "Runtime": "nodejs12.x",
+        "Timeout": 180,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleCustomResourcesLambdaExecution",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "IamRoleCustomResourcesLambdaExecution"
+      ]
     },
     "UserTable": {
       "Type": "AWS::DynamoDB::Table",
