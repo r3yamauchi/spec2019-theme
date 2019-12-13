@@ -184,7 +184,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576204128138-2019-12-13T02:28:48.138Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576204588092-2019-12-13T02:36:28.092Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-CreateUser",
         "Handler": "handler.user_create",
@@ -219,14 +219,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "CreateUserLambdaVersionPkMX659IELWLTfrRjdsOqDwpa0oW3HExcM6sb9ziY": {
+    "CreateUserLambdaVersion1oEHpvCJQyjLyb03zrWwLw3q3vw0EDYu9lsa9f6IaE": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateUserLambdaFunction"
         },
-        "CodeSha256": "y3GEqucFJlDO0dLY4YuknkO8F8VoA00qSn5voQQrjeM="
+        "CodeSha256": "y8S9noHf5/IfK5zD5vdMNH1NtBDstRA/x7XtosnQe/E="
       }
     },
     "WalletChargeLambdaFunction": {
@@ -236,7 +236,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576204128138-2019-12-13T02:28:48.138Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576204588092-2019-12-13T02:36:28.092Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-WalletCharge",
         "Handler": "handler.wallet_charge",
@@ -271,14 +271,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "WalletChargeLambdaVersionzBm0j1AoDucp4he2lrMGdMjqC2BNUjfizsxfc6zwU": {
+    "WalletChargeLambdaVersionmXFLcJNFtL5Wbio0EGKJzogsYB16GNQGOXytRJKssc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "WalletChargeLambdaFunction"
         },
-        "CodeSha256": "y3GEqucFJlDO0dLY4YuknkO8F8VoA00qSn5voQQrjeM="
+        "CodeSha256": "y8S9noHf5/IfK5zD5vdMNH1NtBDstRA/x7XtosnQe/E="
       }
     },
     "WalletUseLambdaFunction": {
@@ -288,7 +288,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576204128138-2019-12-13T02:28:48.138Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576204588092-2019-12-13T02:36:28.092Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-WalletUse",
         "Handler": "handler.wallet_use",
@@ -323,14 +323,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "WalletUseLambdaVersionDesjZ2vzw9gyq5L3l0Yz8OWZXDbLJeQexX2VYchl7Y": {
+    "WalletUseLambdaVersionRuJNvfZGur029ZmXWu1aY9eZOqhPkaQGFOOb6vH32c0": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "WalletUseLambdaFunction"
         },
-        "CodeSha256": "y3GEqucFJlDO0dLY4YuknkO8F8VoA00qSn5voQQrjeM="
+        "CodeSha256": "y8S9noHf5/IfK5zD5vdMNH1NtBDstRA/x7XtosnQe/E="
       }
     },
     "WalletTransferLambdaFunction": {
@@ -340,7 +340,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576204128138-2019-12-13T02:28:48.138Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576204588092-2019-12-13T02:36:28.092Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-WalletTransfer",
         "Handler": "handler.wallet_transfer",
@@ -375,14 +375,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "WalletTransferLambdaVersionnA1EjwTysFV3JNDKzOJK5iJTM5oRgoswIrBhPtdE": {
+    "WalletTransferLambdaVersionZxWNPez5OdaEEask7BGT3IdgUBJzVEPiXMwGVArrI": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "WalletTransferLambdaFunction"
         },
-        "CodeSha256": "y3GEqucFJlDO0dLY4YuknkO8F8VoA00qSn5voQQrjeM="
+        "CodeSha256": "y8S9noHf5/IfK5zD5vdMNH1NtBDstRA/x7XtosnQe/E="
       }
     },
     "GetUserSummaryLambdaFunction": {
@@ -392,7 +392,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576204128138-2019-12-13T02:28:48.138Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576204588092-2019-12-13T02:36:28.092Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-GetUserSummary",
         "Handler": "handler.get_user_summary",
@@ -427,14 +427,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "GetUserSummaryLambdaVersion49AZuQC5GOIddImsBJug7dn1Po19FPNX2NqQSPhbobw": {
+    "GetUserSummaryLambdaVersionJwNB9kQmzEqPWov7JmR92XrXhDPzXjbvrvENBfsgbU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetUserSummaryLambdaFunction"
         },
-        "CodeSha256": "y3GEqucFJlDO0dLY4YuknkO8F8VoA00qSn5voQQrjeM="
+        "CodeSha256": "y8S9noHf5/IfK5zD5vdMNH1NtBDstRA/x7XtosnQe/E="
       }
     },
     "GetPaymentHistoryLambdaFunction": {
@@ -444,7 +444,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576204128138-2019-12-13T02:28:48.138Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576204588092-2019-12-13T02:36:28.092Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-GetPaymentHistory",
         "Handler": "handler.get_payment_history",
@@ -479,14 +479,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "GetPaymentHistoryLambdaVersionJ9dymYnqVpSiJew3w2mtvbb7RfAgedDGjsVAze2w1k": {
+    "GetPaymentHistoryLambdaVersionTedsSveJN82X57uLmFaSz6QEcEESa0PGnLrjH1pe8": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetPaymentHistoryLambdaFunction"
         },
-        "CodeSha256": "y3GEqucFJlDO0dLY4YuknkO8F8VoA00qSn5voQQrjeM="
+        "CodeSha256": "y8S9noHf5/IfK5zD5vdMNH1NtBDstRA/x7XtosnQe/E="
       }
     },
     "ApiGatewayRestApi": {
@@ -860,7 +860,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1576204126771": {
+    "ApiGatewayDeployment1576204585896": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -1193,7 +1193,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576204128138-2019-12-13T02:28:48.138Z/custom-resources.zip"
+          "S3Key": "serverless/jeffpay/dev/1576204588092-2019-12-13T02:36:28.092Z/custom-resources.zip"
         },
         "FunctionName": "jeffpay-dev-custom-resource-apigw-cw-role",
         "Handler": "apiGatewayCloudWatchRole/handler.handler",
@@ -1283,37 +1283,37 @@
     "CreateUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateUserLambdaVersionPkMX659IELWLTfrRjdsOqDwpa0oW3HExcM6sb9ziY"
+        "Ref": "CreateUserLambdaVersion1oEHpvCJQyjLyb03zrWwLw3q3vw0EDYu9lsa9f6IaE"
       }
     },
     "WalletChargeLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "WalletChargeLambdaVersionzBm0j1AoDucp4he2lrMGdMjqC2BNUjfizsxfc6zwU"
+        "Ref": "WalletChargeLambdaVersionmXFLcJNFtL5Wbio0EGKJzogsYB16GNQGOXytRJKssc"
       }
     },
     "WalletUseLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "WalletUseLambdaVersionDesjZ2vzw9gyq5L3l0Yz8OWZXDbLJeQexX2VYchl7Y"
+        "Ref": "WalletUseLambdaVersionRuJNvfZGur029ZmXWu1aY9eZOqhPkaQGFOOb6vH32c0"
       }
     },
     "WalletTransferLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "WalletTransferLambdaVersionnA1EjwTysFV3JNDKzOJK5iJTM5oRgoswIrBhPtdE"
+        "Ref": "WalletTransferLambdaVersionZxWNPez5OdaEEask7BGT3IdgUBJzVEPiXMwGVArrI"
       }
     },
     "GetUserSummaryLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetUserSummaryLambdaVersion49AZuQC5GOIddImsBJug7dn1Po19FPNX2NqQSPhbobw"
+        "Ref": "GetUserSummaryLambdaVersionJwNB9kQmzEqPWov7JmR92XrXhDPzXjbvrvENBfsgbU"
       }
     },
     "GetPaymentHistoryLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetPaymentHistoryLambdaVersionJ9dymYnqVpSiJew3w2mtvbb7RfAgedDGjsVAze2w1k"
+        "Ref": "GetPaymentHistoryLambdaVersionTedsSveJN82X57uLmFaSz6QEcEESa0PGnLrjH1pe8"
       }
     },
     "ServiceEndpoint": {
