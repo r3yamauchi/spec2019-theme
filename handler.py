@@ -52,10 +52,6 @@ def wallet_charge(event, context):
     user_wallet = result['Items'].pop()
     logger.debug("user_wallet: {}".format(user_wallet))
 
-    logger.debug("user_wallet amount: {}, chargeAmount: {}".format(user_wallet['amount'], body['chargeAmount']))
-    user_wallet['amount'] = 0 if user_wallet['amount'] is None else user_wallet['amount']
-    body['chargeAmount'] = 0 if body['chargeAmount'] is None else body['chargeAmount']
-
     total_amount = user_wallet['amount'] + body['chargeAmount']
     wallet_table.update_item(
         Key={
