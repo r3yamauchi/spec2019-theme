@@ -102,7 +102,7 @@ def wallet_use(event, context):
             Key={
                 'id': user_wallet['id']
             },
-            AttributeUpdate={
+            AttributeUpdates={
                 'amount': {
                     'Value': -body['useAmount'],
                     'Action': 'ADD'
