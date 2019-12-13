@@ -104,11 +104,11 @@ def wallet_use(event, context):
             },
             AttributeUpdate={
                 'amount': {
-                    'Value': -body['useAmout'],
+                    'Value': -body['useAmount'],
                     'Action': 'ADD'
                 }
             },
-            ConditionExpression=Attr('amount').gte(body['useAmout']),
+            ConditionExpression=Attr('amount').gte(body['useAmount']),
             ReturnValues='ALL_NEW'
         )
     except botocore.exceptions.ClientError as e:
