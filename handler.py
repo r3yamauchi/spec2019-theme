@@ -47,7 +47,7 @@ def wallet_charge(event, context):
     logger.debug("body: {}".format(body))
 
     result = wallet_table.query({
-        'KeyConditionExpression': Key('userId').eq(body['fromUserId']),
+        'KeyConditionExpression': Key('userId').eq(body['userId']),
         'IndexName': 'WalletGSI'
     })
     user_wallet = result['Items'].pop()
