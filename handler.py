@@ -178,8 +178,11 @@ def wallet_transfer(event, context):
                         'Key': {
                             'id': {'S': from_wallet['id']}
                         },
-                        'ConditionExpression': 'amount >= :tm',
-                        'UpdateExpression': 'SET amount = :am + amount',
+                        'ConditionExpression': '#amount >= :tm',
+                        'UpdateExpression': 'SET #amount = :am + #amount',
+                        'ExpressionAttributeNames': {
+		                    '#amount': 'amount'
+	}                   ,
                         'ExpressionAttributeValues': {
                             ':tm': {'N': str(body['transferAmount'])},
                             ':am': {'N': str(-body['transferAmount'])},
@@ -192,7 +195,10 @@ def wallet_transfer(event, context):
                         'Key': {
                             'id': {'S': to_wallet['id']}
                         },
-                        'UpdateExpression': 'SET amount = :am + amount',
+                        'UpdateExpression': 'SET #amount = :am + #amount',
+                        'ExpressionAttributeNames': {
+		                    '#amount': 'amount'
+	}                   ,
                         'ExpressionAttributeValues': {
                             ':am': {'N': str(body['transferAmount'])},
                         }
