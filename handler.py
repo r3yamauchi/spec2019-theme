@@ -5,12 +5,23 @@ from datetime import datetime
 
 import boto3
 import requests
+import logging
+import traceback
+
+ddb = boto3.resource('dynamodb')
+user_table = ddb.Table(os.environ['USER_TABLE'])
+wallet_table = ddb.Table(os.environ['WALLET_TABLE'])
+history_table = ddb.Table(os.environ['PAYMENT_HISTORY_TABLE'])
+
+logger = logging.getLogger('spec')
+loglevel = logging.DEBUG
+logger.setLevel(loglevel)
 
 
 def user_create(event, context):
-    user_table = boto3.resource('dynamodb').Table(os.environ['USER_TABLE'])
-    wallet_table = boto3.resource('dynamodb').Table(os.environ['WALLET_TABLE'])
     body = json.loads(event['body'])
+    logger.debug("body: {}".format(body))
+
     user_table.put_item(
         Item={
             'id': body['id'],
@@ -31,9 +42,9 @@ def user_create(event, context):
 
 
 def wallet_charge(event, context):
-    wallet_table = boto3.resource('dynamodb').Table(os.environ['WALLET_TABLE'])
-    history_table = boto3.resource('dynamodb').Table(os.environ['PAYMENT_HISTORY_TABLE'])
     body = json.loads(event['body'])
+    logger.debug("body: {}".format(body))
+
     result = wallet_table.scan(
         ScanFilter={
             'userId': {
@@ -45,6 +56,8 @@ def wallet_charge(event, context):
         }
     )
     user_wallet = result['Items'].pop()
+    logger.debug("user_wallet: {}".format(user_wallet))
+
     total_amount = user_wallet['amount'] + body['chargeAmount']
     wallet_table.update_item(
         Key={
@@ -80,9 +93,9 @@ def wallet_charge(event, context):
 
 
 def wallet_use(event, context):
-    wallet_table = boto3.resource('dynamodb').Table(os.environ['WALLET_TABLE'])
-    history_table = boto3.resource('dynamodb').Table(os.environ['PAYMENT_HISTORY_TABLE'])
     body = json.loads(event['body'])
+    logger.debug("body: {}".format(body))
+
     result = wallet_table.scan(
         ScanFilter={
             'userId': {
@@ -135,9 +148,9 @@ def wallet_use(event, context):
 
 
 def wallet_transfer(event, context):
-    wallet_table = boto3.resource('dynamodb').Table(os.environ['WALLET_TABLE'])
-    history_table = boto3.resource('dynamodb').Table(os.environ['PAYMENT_HISTORY_TABLE'])
     body = json.loads(event['body'])
+    logger.debug("body: {}".format(body))
+
     from_wallet = wallet_table.scan(
         ScanFilter={
             'userId': {
@@ -229,10 +242,10 @@ def wallet_transfer(event, context):
 
 
 def get_user_summary(event, context):
-    wallet_table = boto3.resource('dynamodb').Table(os.environ['WALLET_TABLE'])
-    user_table = boto3.resource('dynamodb').Table(os.environ['USER_TABLE'])
-    history_table = boto3.resource('dynamodb').Table(os.environ['PAYMENT_HISTORY_TABLE'])
+    logger.debug("event: {}".format(event))
     params = event['pathParameters']
+    logger.debug("params: {}".format(params))
+
     user = user_table.get_item(
         Key={'id': params['userId']}
     )
@@ -281,9 +294,9 @@ def get_user_summary(event, context):
 
 
 def get_payment_history(event, context):
-    wallet_table = boto3.resource('dynamodb').Table(os.environ['WALLET_TABLE'])
-    history_table = boto3.resource('dynamodb').Table(os.environ['PAYMENT_HISTORY_TABLE'])
+    logger.debug("event: {}".format(event))
     params = event['pathParameters']
+
     wallet = wallet_table.scan(
         ScanFilter={
             'userId': {
@@ -327,5 +340,6 @@ def get_payment_history(event, context):
 
 
 def _get_location_name(location_id):
+    logger.debug("location_id: {}".format(location_id))
     locations = requests.get(os.environ['LOCATION_ENDPOINT']).json()
     return locations[str(location_id)]
