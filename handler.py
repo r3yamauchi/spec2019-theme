@@ -268,10 +268,11 @@ def get_user_summary(event, context):
         sum_charge += item.get('chargeAmount', 0)
         sum_payment += item.get('useAmount', 0)
         location_name = _get_location_name(item['locationId'])
-        if location_name not in times_per_location:
-            times_per_location[location_name] = 1
-        else:
-            times_per_location[location_name] += 1
+        if location_name != 'unknown':
+            if location_name not in times_per_location:
+                times_per_location[location_name] = 1
+            else:
+                times_per_location[location_name] += 1
     
     return {
         'statusCode': 200,
@@ -321,4 +322,4 @@ def _get_location_name(location_id):
     logger.debug("location_id: {}".format(location_id))
     locations = requests.get(os.environ['LOCATION_ENDPOINT']).json()
     logger.debug("locations: {}".format(locations))
-    return locations[str(location_id)]
+    return locations[str(location_id)] if str(location_id) in locations else 'unknown'
