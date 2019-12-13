@@ -10,6 +10,8 @@ provider:
     TZ: Asia/Tokyo
     USER_TABLE:
       Ref: UserTable
+    WALLET_TABLE:
+      Ref: WalletTable
     PAYMENT_HISTORY_TABLE:
       Ref: PaymentHistoryTable
     NOTIFICATION_ENDPOINT: 'https://o5wb09mgpg.execute-api.ap-northeast-1.amazonaws.com/prod/notification'
