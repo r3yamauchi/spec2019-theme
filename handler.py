@@ -19,6 +19,9 @@ logger = logging.getLogger('spec')
 loglevel = logging.DEBUG
 logger.setLevel(loglevel)
 
+locations = requests.get(os.environ['LOCATION_ENDPOINT']).json()
+logger.debug("locations: {}".format(locations))
+
 
 def user_create(event, context):
     body = json.loads(event['body'])
@@ -69,11 +72,18 @@ def wallet_charge(event, context):
             ReturnValues='ALL_NEW'
         )
     except botocore.exceptions.ClientError as e:
+        logger.debug("e.response['Error']['Code']: {}".format(e.response['Error']['Code']))
         if e.response['Error']['Code'] == 'ConditionalCheckFailedException':
             return {
                 'statusCode': 400,
                 'body': json.dumps({'errorMessage': 'There was not enough money.'})
             }
+        else:
+            return {
+                'statusCode': 400,
+                'body': json.dumps({'errorMessage': e.response['Error']['Code']})
+            }
+
     history_table.put_item(
         Item={
             'walletId': user_wallet['id'],
@@ -120,11 +130,18 @@ def wallet_use(event, context):
             ReturnValues='ALL_NEW'
         )
     except botocore.exceptions.ClientError as e:
+        logger.debug("e.response['Error']['Code']: {}".format(e.response['Error']['Code']))
         if e.response['Error']['Code'] == 'ConditionalCheckFailedException':
             return {
                 'statusCode': 400,
                 'body': json.dumps({'errorMessage': 'There was not enough money.'})
             }
+        else:
+            return {
+                'statusCode': 400,
+                'body': json.dumps({'errorMessage': e.response['Error']['Code']})
+            }
+
     history_table.put_item(
         Item={
             'walletId': user_wallet['id'],
@@ -209,16 +226,17 @@ def wallet_transfer(event, context):
 
     except botocore.exceptions.ClientError as e:
         logger.debug("transaction error: {}".format(e.response))
+        logger.debug("e.response['Error']['Code']: {}".format(e.response['Error']['Code']))
         if e.response['Error']['Code'] == 'ConditionalCheckFailedException':
             return {
                 'statusCode': 400,
                 'body': json.dumps({'errorMessage': 'There was not enough money.'})
             }
-
-        return {
-            'statusCode': 400,
-            'body': json.dumps({'errorMessage': 'unknown error.'})
-        }
+        else:
+            return {
+                'statusCode': 400,
+                'body': json.dumps({'errorMessage': e.response['Error']['Code']})
+            }
 
     history_table.put_item(
         Item={
@@ -333,6 +351,4 @@ def get_payment_history(event, context):
 
 def _get_location_name(location_id):
     logger.debug("location_id: {}".format(location_id))
-    locations = requests.get(os.environ['LOCATION_ENDPOINT']).json()
-    logger.debug("locations: {}".format(locations))
     return locations[str(location_id)] if str(location_id) in locations else 'unknown'
