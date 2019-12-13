@@ -45,15 +45,8 @@ def wallet_charge(event, context):
     body = json.loads(event['body'])
     logger.debug("body: {}".format(body))
 
-    result = wallet_table.scan(
-        ScanFilter={
-            'userId': {
-                'AttributeValueList': [
-                    body['userId']
-                ],
-                'ComparisonOperator': 'EQ'
-            }
-        }
+    result = wallet_table.get_item(
+        Key={'userId': body['fromUserId']}
     )
     user_wallet = result['Items'].pop()
     logger.debug("user_wallet: {}".format(user_wallet))
@@ -100,15 +93,8 @@ def wallet_use(event, context):
     body = json.loads(event['body'])
     logger.debug("body: {}".format(body))
 
-    result = wallet_table.scan(
-        ScanFilter={
-            'userId': {
-                'AttributeValueList': [
-                    body['userId']
-                ],
-                'ComparisonOperator': 'EQ'
-            }
-        }
+    result = wallet_table.get_item(
+        Key={'userId': body['fromUserId']}
     )
     user_wallet = result['Items'].pop()
     total_amount = user_wallet['amount'] - body['useAmount']
@@ -154,26 +140,12 @@ def wallet_use(event, context):
 def wallet_transfer(event, context):
     body = json.loads(event['body'])
     logger.debug("body: {}".format(body))
-
-    from_wallet = wallet_table.scan(
-        ScanFilter={
-            'userId': {
-                'AttributeValueList': [
-                    body['fromUserId']
-                ],
-                'ComparisonOperator': 'EQ'
-            }
-        }
+    
+    from_wallet = wallet_table.get_item(
+        Key={'userId': body['fromUserId']}
     ).get('Items').pop()
-    to_wallet = wallet_table.scan(
-        ScanFilter={
-            'userId': {
-                'AttributeValueList': [
-                    body['toUserId']
-                ],
-                'ComparisonOperator': 'EQ'
-            }
-        }
+    to_wallet = wallet_table.get_item(
+        Key={'userId': body['fromUserId']}
     ).get('Items').pop()
 
     from_total_amount = from_wallet['amount'] - body['transferAmount']
@@ -253,25 +225,11 @@ def get_user_summary(event, context):
     user = user_table.get_item(
         Key={'id': params['userId']}
     )
-    wallet = wallet_table.scan(
-        ScanFilter={
-            'userId': {
-                'AttributeValueList': [
-                    params['userId']
-                ],
-                'ComparisonOperator': 'EQ'
-            }
-        }
+    wallet = wallet_table.get_item(
+        Key={'userId': params['userId']}
     ).get('Items').pop()
-    payment_history = history_table.scan(
-        ScanFilter={
-            'walletId': {
-                'AttributeValueList': [
-                    wallet['id']
-                ],
-                'ComparisonOperator': 'EQ'
-            }
-        }
+    payment_history = history_table.query(
+        KeyConditionExpression=Key('walletId').eq(wallet['id'])
     )
     sum_charge = 0
     sum_payment = 0
@@ -300,26 +258,11 @@ def get_user_summary(event, context):
 def get_payment_history(event, context):
     logger.debug("event: {}".format(event))
     params = event['pathParameters']
-
-    wallet = wallet_table.scan(
-        ScanFilter={
-            'userId': {
-                'AttributeValueList': [
-                    params['userId']
-                ],
-                'ComparisonOperator': 'EQ'
-            }
-        }
+    wallet = wallet_table.get_item(
+        Key={'userId': params['userId']}
     ).get('Items').pop()
-    payment_history_result = history_table.scan(
-        ScanFilter={
-            'walletId': {
-                'AttributeValueList': [
-                    wallet['id']
-                ],
-                'ComparisonOperator': 'EQ'
-            }
-        }
+    payment_history_result = history_table.get_item(
+        Key={'walletId': wallet['id']}
     )
 
     payment_history = []
