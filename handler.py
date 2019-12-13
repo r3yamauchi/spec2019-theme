@@ -320,4 +320,5 @@ def get_payment_history(event, context):
 def _get_location_name(location_id):
     logger.debug("location_id: {}".format(location_id))
     locations = requests.get(os.environ['LOCATION_ENDPOINT']).json()
+    logger.debug("locations: {}".format(locations))
     return locations[str(location_id)]
