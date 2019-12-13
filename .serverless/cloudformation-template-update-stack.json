@@ -184,7 +184,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576202448088-2019-12-13T02:00:48.088Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576203410920-2019-12-13T02:16:50.920Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-CreateUser",
         "Handler": "handler.user_create",
@@ -236,7 +236,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576202448088-2019-12-13T02:00:48.088Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576203410920-2019-12-13T02:16:50.920Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-WalletCharge",
         "Handler": "handler.wallet_charge",
@@ -288,7 +288,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576202448088-2019-12-13T02:00:48.088Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576203410920-2019-12-13T02:16:50.920Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-WalletUse",
         "Handler": "handler.wallet_use",
@@ -340,7 +340,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576202448088-2019-12-13T02:00:48.088Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576203410920-2019-12-13T02:16:50.920Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-WalletTransfer",
         "Handler": "handler.wallet_transfer",
@@ -392,7 +392,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576202448088-2019-12-13T02:00:48.088Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576203410920-2019-12-13T02:16:50.920Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-GetUserSummary",
         "Handler": "handler.get_user_summary",
@@ -444,7 +444,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576202448088-2019-12-13T02:00:48.088Z/jeffpay.zip"
+          "S3Key": "serverless/jeffpay/dev/1576203410920-2019-12-13T02:16:50.920Z/jeffpay.zip"
         },
         "FunctionName": "jeffpay-dev-GetPaymentHistory",
         "Handler": "handler.get_payment_history",
@@ -860,7 +860,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1576202446754": {
+    "ApiGatewayDeployment1576203409180": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -1193,7 +1193,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/jeffpay/dev/1576202448088-2019-12-13T02:00:48.088Z/custom-resources.zip"
+          "S3Key": "serverless/jeffpay/dev/1576203410920-2019-12-13T02:16:50.920Z/custom-resources.zip"
         },
         "FunctionName": "jeffpay-dev-custom-resource-apigw-cw-role",
         "Handler": "apiGatewayCloudWatchRole/handler.handler",

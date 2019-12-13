@@ -4,6 +4,7 @@ provider:
   runtime: python3.7
   region: ap-northeast-1
   timeout: 30
+  tracing: true
   logs:
     restApi: true
   environment:
