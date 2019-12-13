@@ -16,7 +16,7 @@ provider:
     PAYMENT_HISTORY_TABLE:
       Ref: PaymentHistoryTable
     NOTIFICATION_ENDPOINT: 'https://o5wb09mgpg.execute-api.ap-northeast-1.amazonaws.com/prod/notification'
-    LOCATION_ENDPOINT: 'https://vgz50x9c4h.execute-api.us-west-2.amazonaws.com/dev/location'
+    LOCATION_ENDPOINT: 'https://o5wb09mgpg.execute-api.ap-northeast-1.amazonaws.com/prod/location'
   iamRoleStatements:
     - Effect: Allow
       Action:
