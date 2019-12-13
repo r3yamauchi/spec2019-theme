@@ -4,6 +4,7 @@ import uuid
 from datetime import datetime
 
 import boto3
+import botocore
 import requests
 import logging
 import traceback
@@ -96,24 +97,26 @@ def wallet_use(event, context):
         KeyConditionExpression=Key('userId').eq(body['userId'])
     )
     user_wallet = result['Items'].pop()
-    total_amount = user_wallet['amount'] - body['useAmount']
-    if total_amount < 0:
-        return {
-            'statusCode': 400,
-            'body': json.dumps({'errorMessage': 'There was not enough money.'})
-        }
-
-    wallet_table.update_item(
-        Key={
-            'id': user_wallet['id']
-        },
-        AttributeUpdates={
-            'amount': {
-                'Value': total_amount,
-                'Action': 'PUT'
+    try:
+        response = wallet_table.update_item(
+            Key={
+                'id': user_wallet['id']
+            },
+            AttributeUpdate={
+                'amount': {
+                    'Value': -body['useAmout'],
+                    'Action': 'ADD'
+                }
+            },
+            ConditionExpression=Attr('amount').gte(body['useAmout']),
+            ReturnValues='ALL_NEW'
+        )
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] != 'ConditionalCheckFailedException':
+            return {
+                'statusCode': 400,
+                'body': json.dumps({'errorMessage': 'There was not enough money.'})
             }
-        }
-    )
     history_table.put_item(
         Item={
             'walletId': user_wallet['id'],
@@ -127,7 +130,7 @@ def wallet_use(event, context):
         'transactionId': body['transactionId'],
         'userId': body['userId'],
         'useAmount': body['useAmount'],
-        'totalAmount': int(total_amount)
+        'totalAmount': int(user_wallet['amount'] - body['useAmount'])
     })
 
     return {
